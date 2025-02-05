@@ -67,6 +67,13 @@ class AdminController {
         try {
             const { name, desc, authorId, price, quantity, bookStoreId } = req.body;
 
+            if (!name || !desc || !authorId || !price || !quantity || !bookStoreId) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "All fields are required: name, desc, authorId, price, quantity, bookStoreId"
+                });
+            }
+
             const formattedPrice = parseFloat(price).toFixed(2);
 
             const newBook = await Books.create({
@@ -94,7 +101,7 @@ class AdminController {
             console.error("Create Book Error:", error);
             return next(error);
         }
-    }
+    };
 
 
     static createUser = async (req, res, next) => {
