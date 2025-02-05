@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+  - "16"  # Node.js sürümü (16 veya ihtiyacına göre başka versiyon)
+  
+services:
+  - postgresql  # Eğer PostgreSQL kullanıyorsan
+  - mysql       # Eğer MySQL kullanıyorsan
+
+before_install:
+  - npm install -g npm@latest  # Güncel npm yükle
+
+install:
+  - npm install  # Bağımlılıkları yükle
+
+before_script:
+  - psql -c 'create database test_db;' -U postgres  # PostgreSQL için test veritabanı oluştur
+  - mysql -e 'CREATE DATABASE test_db;' -uroot  # MySQL için test veritabanı oluştur
+
+script:
+  - npm test  # Testleri çalıştır
+
+after_success:
+  - echo "✅ All tests passed successfully!"
